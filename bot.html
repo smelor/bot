@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>مركز التوثيق الرسمي — بوت التوثيق</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#071028;
+    --bg2:#0b1940;
+    --accent:#38bdf8;
+    --accent-2:#0ea5e9;
+    --card:#0f172a;
+    --muted:#94a3b8;
+    --glass:rgba(255,255,255,0.03);
+    --success:#10b981;
+    --danger:#ef4444;
+    --shadow: 0 10px 30px rgba(2,6,23,0.6);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:'Cairo',sans-serif;
+    background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 100%);
+    color:#e6eef6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.6;
+    direction:rtl;
+  }
+
+  /* NAV */
+  .nav{
+    position:sticky;
+    top:0;
+    z-index:999;
+    backdrop-filter: blur(8px);
+    background: linear-gradient(180deg, rgba(6,13,30,0.6), rgba(6,13,30,0.35));
+    border-bottom:1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+  }
+  .nav .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:14px 20px;
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+  .logo{
+    width:46px;height:46px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;color:#061224;font-size:18px;
+    box-shadow: 0 6px 18px rgba(14,165,233,0.12);
+  }
+  .brand h1{font-size:18px;margin:0;color:#e6f7ff}
+  .nav-links{display:flex;gap:16px;align-items:center}
+  .nav-links a{
+    color:var(--muted);
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+    padding:8px 12px;border-radius:8px;
+  }
+  .nav-links a:hover{color:var(--accent);background:var(--glass)}
+  .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061224;padding:9px 14px;border-radius:10px;font-weight:700;text-decoration:none}
+  .cta:hover{transform:translateY(-2px)}
+
+  /* HERO */
+  .hero{
+    max-width:1100px;margin:28px auto 10px;padding:28px 20px;display:grid;grid-template-columns:1fr 420px;gap:26px;align-items:center;
+  }
+  .hero-left h2{font-size:34px;margin:0 0 12px;color:var(--accent)}
+  .tag{display:inline-block;background:linear-gradient(90deg,#0ea5e9,#38bdf8);color:#061224;padding:6px 10px;border-radius:999px;font-weight:700;margin-bottom:12px}
+  .hero-left p{color:var(--muted);margin-bottom:18px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#061224;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none;display:inline-flex;gap:10px;align-items:center;
+  }
+  .btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent);font-weight:700}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:18px;border-radius:12px;box-shadow:var(--shadow);
+  }
+  .hero-right .big-card{
+    padding:22px;border-radius:14px;text-align:center;
+  }
+  .small-btn{display:inline-block;background:rgba(255,255,255,0.02);color:var(--accent);padding:10px 12px;border-radius:10px;margin:8px 6px;font-weight:700}
+
+  /* FEATURES */
+  .section{max-width:1100px;margin:30px auto;padding:36px 20px}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:18px;
+  }
+  .feature{
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.6);
+  }
+  .feature h3{color:var(--accent);margin:0 0 8px}
+  .feature p{color:var(--muted);margin:0}
+
+  /* HOW IT WORKS */
+  .steps{display:flex;flex-direction:column;gap:12px}
+  .step{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,0.02);padding:14px;border-radius:10px}
+  .step .num{width:46px;height:46px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#061224;font-weight:800}
+  .step .desc h4{margin:0 0 6px;font-size:16px;color:#e6f7ff}
+  .step .desc p{margin:0;color:var(--muted);font-size:14px}
+
+  /* PLANS */
+  .plans-wrap{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+  .plan{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px;width:260px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+  .plan .title{font-weight:800;color:var(--accent);margin-bottom:10px}
+  .price{font-size:22px;font-weight:800;color:#fff;margin-bottom:12px}
+  .plan ul{list-style:none;padding:0;margin:0 0 12px;text-align:right}
+  .plan li{padding:6px 0;color:var(--muted)}
+  .plan .buy{display:block;text-align:center;padding:10px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#061224;font-weight:800;text-decoration:none}
+
+  /* FAQ */
+  .faq-item{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px;margin-bottom:10px}
+  .faq-item summary{font-weight:700;cursor:pointer;outline:none}
+  details[open] summary{color:var(--accent)}
+  .faq-item p{margin:8px 0 0;color:var(--muted)}
+
+  /* CONTACT */
+  .contact-cards{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .contact-card{background:rgba(255,255,255,0.02);padding:16px;border-radius:10px;width:320px;text-align:right}
+  .contact-card h4{color:var(--accent);margin:0 0 8px}
+  .contact-card a{display:inline-block;margin-top:10px;text-decoration:none;color:#061224;background:linear-gradient(90deg,var(--accent),var(--accent-2));padding:8px 12px;border-radius:10px;font-weight:800}
+
+  /* FOOTER */
+  footer{padding:20px 10px;text-align:center;color:var(--muted);margin-top:30px;border-top:1px solid rgba(255,255,255,0.03)}
+
+  /* responsive */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr; padding:20px}
+    nav .wrap{flex-direction:column;gap:10px;align-items:flex-start}
+    .nav-links{display:none}
+  }
+  /* micro animations */
+  .fade-in{opacity:0;transform:translateY(6px);animation:in .7s forwards}
+  @keyframes in{to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" role="navigation">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">BT</div>
+        <div>
+          <h1>مركز التوثيق</h1>
+          <div style="font-size:12px;color:var(--muted)">توثيق • أرقام • رشق • نقاط</div>
+        </div>
+      </div>
+
+      <div class="nav-links" aria-hidden="true">
+        <a href="#hero">الرئيسية</a>
+        <a href="#features">المزايا</a>
+        <a href="#plans">الباقات</a>
+        <a href="#faq">الأسئلة</a>
+        <a href="#contact">تواصل</a>
+      </div>
+
+      <a class="cta btn" href="https://t.me/B2XLBOT" target="_blank" rel="noopener">تواصل الآن</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-left fade-in">
+        <span class="tag">خدمة توثيق رسمية • آمنة</span>
+        <h2>احصل على توثيق تيليجرام بسرعة ومصداقية</h2>
+        <p>نحن نقدّم حلول متكاملة: توثيق حسابك، بيع أرقام مضمونة، وخدمات رشق لزيادة التفاعل — كل شيء عبر بوت موثوق وسهل الاستخدام.</p>
+
+        <div class="actions">
+          <a class="btn" href="https://t.me/BLACK09071BOT" target="_blank" rel="noopener">🚀 دخول بوت التوثيق</a>
+          <a class="btn secondary" href="https://t.me/B2XLBOT" target="_blank" rel="noopener">💬 بوت التواصل</a>
+          <button class="small-btn" onclick="scrollToId('plans')">مشاهدة الباقات</button>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="card big-card fade-in">
+          <h3 style="color:var(--accent);margin:0 0 8px">لمحة سريعة</h3>
+          <p style="color:var(--muted);margin:0 0 12px">بوت موثوق لإدارة طلبات التوثيق، سحب التقارير، وإضافة رصيد النقاط للمستخدمين بسرعة وأمان.</p>
+
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+            <span class="small-btn">نقاط مجانية للعضو الجديد</span>
+            <span class="small-btn">دعم 24/7</span>
+            <span class="small-btn">ضمان التوثيق</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <h2 style="text-align:center;color:var(--accent)">لماذا تختار خدمتنا؟</h2>
+      <div class="grid" style="margin-top:18px">
+        <article class="feature fade-in">
+          <h3>🔐 توثيق رسمي ومضمون</h3>
+          <p>نفحص الحسابات قبل التوثيق، ونضمن أن عملية التوثيق تتوافق مع السياسات حفاظًا على استمراريتها.</p>
+        </article>
+
+        <article class="feature fade-in">
+          <h3>📊 نظام نقاط منظم</h3>
+          <p>نظام نقاط واضح يمكنك جمعه عبر مهام أو شراء نقاط، واستبداله بخدمات التوثيق أو الأرقام.</p>
+        </article>
+
+        <article class="feature fade-in">
+          <h3>📱 أرقام تليجرام مميزة</h3>
+          <p>نوفر أرقامًا صالحة للتفعيل وملكية خاصة لك مع ضمان عدم التكرار.</p>
+        </article>
+
+        <article class="feature fade-in">
+          <h3>🚀 خدمات رشق متحكم بها</h3>
+          <p>زيادة تفاعل ومشاهدات حقيقية لقنواتك عبر باقات رشق متوافقة مع المعايير.</p>
+        </article>
+
+        <article class="feature fade-in">
+          <h3>🛠️ دعم فني ومتابعة</h3>
+          <p>فريقنا يقدّم دعمًا فنيًا ومتابعة لحالتك طوال مدة الباقة مع تقارير تنفيذ.</p>
+        </article>
+
+        <article class="feature fade-in">
+          <h3>💼 حماية وسياسات واضحة</h3>
+          <p>نتعامل بصرامة مع المخالفات ونضمن سلامة الخدمات لجميع المستخدمين.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="how">
+      <h2 style="text-align:center;color:var(--accent)">كيف تعمل الخدمة؟</h2>
+      <div class="steps" style="margin-top:18px;max-width:880px;margin-left:auto;margin-right:auto">
+        <div class="step fade-in">
+          <div class="num">1</div>
+          <div class="desc">
+            <h4>سجل في بوت التوثيق</h4>
+            <p>افتح بوت التوثيق واضغط "ابدأ" للحصول على نقاط ترحيبية وتجهيز ملفك.</p>
+          </div>
+        </div>
+
+        <div class="step fade-in">
+          <div class="num">2</div>
+          <div class="desc">
+            <h4>اجمع نقاطك أو اشترِها</h4>
+            <p>اكسب نقاطاً مجاناً عبر المهام أو اشترِ النقاط من بوت التواصل لتسريع العملية.</p>
+          </div>
+        </div>
+
+        <div class="step fade-in">
+          <div class="num">3</div>
+          <div class="desc">
+            <h4>اختر باقة التوثيق</h4>
+            <p>اختر المدة (شهر / 3 شهور / 6 شهور) واطلب التفعيل عبر البوت.</p>
+          </div>
+        </div>
+
+        <div class="step fade-in">
+          <div class="num">4</div>
+          <div class="desc">
+            <h4>التفعيل والمتابعة</h4>
+            <p>نقوم بالمراجعة والتفعيل خلال 24–72 ساعة مع تقرير حالة وتأكيد التوثيق.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANS -->
+    <section class="section" id="plans">
+      <h2 style="text-align:center;color:var(--accent)">الباقات والأسعار</h2>
+      <div class="plans-wrap" style="margin-top:20px">
+        <div class="plan fade-in">
+          <div class="title">باقة شهر واحد</div>
+          <div class="price">5$</div>
+          <p style="color:var(--muted)">مناسبة للتجربة أو الحسابات الشخصية.</p>
+          <ul>
+            <li>تفعيل رسمي لمدة شهر</li>
+            <li>دعم فني خلال الفترة</li>
+            <li>تسريع المراجعة</li>
+          </ul>
+          <a class="buy" href="https://t.me/B2XLBOT" target="_blank" rel="noopener">اشترك الآن</a>
+        </div>
+
+        <div class="plan fade-in" style="border:2px solid rgba(56,189,248,0.12)">
+          <div class="title">باقة 3 شهور — عرض</div>
+          <div class="price">12$ <span style="font-size:12px;color:var(--muted);">بدلاً من 15$</span></div>
+          <p style="color:var(--muted)">القيمة الأفضل لمن يريد ظهورًا أطول ومصداقية أعلى.</p>
+          <ul>
+            <li>تفعيل لمدة 3 شهور</li>
+            <li>دعم فني مميز</li>
+            <li>أولوية بالمراجعة</li>
+          </ul>
+          <a class="buy" href="https://t.me/B2XLBOT" target="_blank" rel="noopener">احجز الآن</a>
+        </div>
+
+        <div class="plan fade-in">
+          <div class="title">باقة 6 شهور</div>
+          <div class="price">25$</div>
+          <p style="color:var(--muted)">خيار الشركات والحسابات المهمة.</p>
+          <ul>
+            <li>تفعيل لمدة 6 شهور</li>
+            <li>متابعة شهرية وتقارير</li>
+            <li>دعم فني فوري</li>
+          </ul>
+          <a class="buy" href="https://t.me/B2XLBOT" target="_blank" rel="noopener">اشترك الآن</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <h2 style="text-align:center;color:var(--accent)">الأسئلة الأكثر شيوعًا</h2>
+      <div style="max-width:900px;margin:18px auto">
+        <details class="faq-item">
+          <summary>ما هو التوثيق؟</summary>
+          <p>التوثيق هو علامة تضع بجانب اسم الحساب لإثبات أنه حساب رسمي وموثوق، يزيد من المصداقية أمام المتابعين.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>كم يستغرق التوثيق؟</summary>
+          <p>المدة المعتادة للمراجعة والتفعيل تتراوح بين 24 و72 ساعة حسب حالة الحساب.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>هل يمكن استرداد المال؟</summary>
+          <p>لا — التوثيق هو خدمة تنفيذية، وفي حال حدوث مشكلات يمكن مناقشة حالات الاسترداد مع الإدارة وفق السياسة.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>لماذا قد يُرفض طلبي؟</summary>
+          <p>أسباب الرفض: الحساب جديد جدًا، وجود محتوى مخالف، تغيير المعرف أثناء المراجعة، أو بيانات غير واضحة.</p>
+        </details>
+
+        <details class="faq-item">
+          <summary>كيف أضيف نقاط أو أشتريها؟</summary>
+          <p>ادخل إلى بوت التواصل واطلب شراء النقاط — ستحصل على نقاطك مضافة أوتوماتيكيًا بعد الدفع.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <h2 style="text-align:center;color:var(--accent)">تواصل معنا</h2>
+      <p style="text-align:center;color:var(--muted);max-width:900px;margin:8px auto 18px">للاشتراك، أسئلة الدعم أو شراء النقاط تواصل عبر البوتات الرسمية أو اضغط إحدى الخيارات أدناه:</p>
+
+      <div class="contact-cards">
+        <div class="contact-card fade-in">
+          <h4>⚡ بوت التوثيق</h4>
+          <p>ادخل مباشرة لبدء إجراءات التوثيق ومراجعة حسابك.</p>
+          <a href="https://t.me/BLACK09071BOT" target="_blank" rel="noopener">دخول بوت التوثيق</a>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px">يوزر: <strong>@BLACK09071BOT</strong>
+            <button onclick="copyText('@BLACK09071BOT')" style="margin-right:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);border:0;color:var(--accent);cursor:pointer">نسخ</button>
+          </div>
+        </div>
+
+        <div class="contact-card fade-in">
+          <h4>💬 بوت التواصل (المبيعات والدعم)</h4>
+          <p>لشراء النقاط، تسليم الخدمات، ومساعدة فنية مباشرة.</p>
+          <a href="https://t.me/B2XLBOT" target="_blank" rel="noopener">دخول بوت التواصل</a>
+          <div style="margin-top:8px;color:var(--muted);font-size:13px">يوزر: <strong>@B2XLBOT</strong>
+            <button onclick="copyText('@B2XLBOT')" style="margin-right:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.03);border:0;color:var(--accent);cursor:pointer">نسخ</button>
+          </div>
+        </div>
+
+        <div class="contact-card fade-in">
+          <h4>📢 قناة التحديثات</h4>
+          <p>تابع القناة للحصول على الإعلانات والعروض والشرح المصوّر.</p>
+          <a href="https://t.me/STAR_TOC" target="_blank" rel="noopener">زيارة القناة</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="max-width:1100px;margin:0 auto;padding:10px 18px">
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
+        <div style="font-weight:700;color:var(--muted)">© 2025 مركز التوثيق — جميع الحقوق محفوظة</div>
+        <div style="font-size:13px;color:var(--muted)">تم تصميم الموقع لعرض خدمات بوت التوثيق وشرحها. لأي استفسار تواصل عبر بوت الدعم.</div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // fade-in simple
+  document.addEventListener('DOMContentLoaded',()=> {
+    document.querySelectorAll('.fade-in').forEach((el,i)=>{
+      el.style.animationDelay = (i*120)+'ms';
+      el.classList.add('fade-in');
+    });
+  });
+
+  // scroll helper
+  function scrollToId(id){
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  // copy to clipboard helper
+  function copyText(text){
+    if(!navigator.clipboard) {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); ta.remove();
+      alert('تم نسخ: ' + text);
+      return;
+    }
+    navigator.clipboard.writeText(text).then(()=>{
+      alert('تم نسخ: ' + text);
+    }).catch(()=> alert('فشل النسخ'));
+  }
+
+  // make details accessible (open first)
+  document.querySelectorAll('details').forEach((d)=> {
+    d.addEventListener('toggle', e => {
+      if (d.open) {
+        // close siblings
+        document.querySelectorAll('details').forEach(s => { if(s!==d) s.open=false });
+      }
+    });
+  });
+
+  // smooth nav highlight (optional)
+  const sections = [...document.querySelectorAll('main section')];
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY + 120;
+    let current = null;
+    sections.forEach(s=>{
+      if(s.offsetTop <= y) current = s.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مركز التوثيق الرسمي — بوت التوثيق</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#071028;
+  --bg2:#0b1940;
+  --accent:#38bdf8;
+  --accent2:#0ea5e9;
+  --card:#0f172a;
+  --muted:#94a3b8;
+  --glass:rgba(255,255,255,0.03);
+  --shadow:0 10px 30px rgba(2,6,23,0.6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Cairo',sans-serif;
+  background: linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:#e6eef6;
+  direction:rtl;
+  scroll-behavior:smooth;
+}
+
+/* NAVIGATION */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  backdrop-filter:blur(8px);
+  background:linear-gradient(180deg, rgba(6,13,30,0.7), rgba(6,13,30,0.35));
+  border-bottom:1px solid rgba(255,255,255,0.03);
+  box-shadow:0 6px 18px rgba(2,6,23,0.45);
+}
+.nav .wrap{
+  max-width:1200px;
+  margin:0 auto;
+  padding:12px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:50px;height:50px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#061224;font-size:20px;
+  box-shadow:0 6px 18px rgba(14,165,233,0.2);
+}
+.nav-links a{
+  text-decoration:none;color:var(--muted);
+  font-weight:600;padding:8px 12px;border-radius:8px;
+  transition:0.3s;
+}
+.nav-links a:hover{background:var(--glass);color:var(--accent)}
+.cta{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  padding:10px 16px;border-radius:10px;
+  font-weight:700;color:#061224;text-decoration:none;
+  transition:0.3s;
+}
+.cta:hover{transform:translateY(-2px)}
+
+/* HERO */
+.hero{
+  max-width:1200px;margin:40px auto;padding:20px;
+  display:grid;grid-template-columns:1fr 480px;gap:30px;align-items:center;
+}
+.hero-left h2{font-size:36px;color:var(--accent);margin-bottom:14px}
+.tag{background:linear-gradient(90deg,var(--accent2),var(--accent));padding:6px 12px;border-radius:999px;color:#061224;font-weight:700;margin-bottom:14px;display:inline-block}
+.hero-left p{color:var(--muted);margin-bottom:20px;font-size:16px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#061224;padding:12px 18px;border-radius:12px;
+  font-weight:800;text-decoration:none;display:flex;align-items:center;gap:10px;
+  transition:0.3s;
+}
+.btn.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent)}
+.btn:hover{transform:translateY(-2px)}
+.small-btn{background:rgba(255,255,255,0.02);color:var(--accent);padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;transition:0.3s}
+.small-btn:hover{background:rgba(255,255,255,0.05)}
+
+/* CARDS */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding:20px;border-radius:14px;box-shadow:var(--shadow);
+  transition:0.3s;
+}
+.card:hover{transform:translateY(-4px)}
+
+/* SECTIONS */
+.section{max-width:1200px;margin:40px auto;padding:40px 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.feature h3{color:var(--accent);margin-bottom:10px;font-size:18px}
+.feature p{color:var(--muted);font-size:14px}
+
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:16px;max-width:900px;margin:20px auto}
+.step{display:flex;gap:16px;align-items:flex-start;background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;transition:0.3s}
+.step:hover{transform:translateX(4px)}
+.step .num{width:50px;height:50px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;color:#061224;font-weight:800;font-size:18px}
+.step .desc h4{color:#e6f7ff;margin-bottom:6px;font-size:17px}
+.step .desc p{color:var(--muted);font-size:14px;margin:0}
+
+/* PLANS */
+.plans-wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.plan{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:14px;width:280px;box-shadow:var(--shadow);transition:0.3s}
+.plan:hover{transform:translateY(-6px)}
+.plan .title{font-weight:800;color:var(--accent);margin-bottom:10px;font-size:18px}
+.price{font-size:24px;color:#fff;font-weight:800;margin-bottom:12px}
+.plan ul{list-style:none;padding:0;margin-bottom:12px;text-align:right}
+.plan li{color:var(--muted);padding:6px 0;font-size:14px}
+.plan .buy{display:block;text-align:center;padding:12px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent2));font-weight:800;color:#061224;text-decoration:none;transition:0.3s}
+.plan .buy:hover{transform:translateY(-2px)}
+
+/* FAQ */
+.faq-item{background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;margin-bottom:12px;transition:0.3s}
+.faq-item summary{font-weight:700;cursor:pointer;font-size:15px;outline:none}
+details[open] summary{color:var(--accent)}
+.faq-item p{color:var(--muted);font-size:14px;margin-top:6px}
+
+/* CONTACT */
+.contact-cards{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:20px}
+.contact-card{background:rgba(255,255,255,0.02);padding:18px;border-radius:12px;width:340px;transition:0.3s;text-align:right}
+.contact-card:hover{transform:translateY(-4px)}
+.contact-card h4{color:var(--accent);margin-bottom:10px}
+.contact-card a{display:inline-block;margin-top:10px;text-decoration:none;color:#061224;background:linear-gradient(90deg,var(--accent),var(--accent2));padding:10px 14px;border-radius:12px;font-weight:800;transition:0.3s}
+.contact-card a:hover{transform:translateY(-2px)}
+
+/* FOOTER */
+footer{padding:24px 12px;text-align:center;color:var(--muted);margin-top:40px;border-top:1px solid rgba(255,255,255,0.03)}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+  .hero{grid-template-columns:1fr;gap:20px}
+  .nav .wrap{flex-direction:column;align-items:flex-start;gap:10px}
+  .nav-links{display:none}
+  .plans-wrap{flex-direction:column;align-items:center}
+}
+
+/* ANIMATIONS */
+.fade-in{opacity:0;transform:translateY(6px);animation:fadeIn 0.8s forwards;}
+@keyframes fadeIn{to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<header class="nav">
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">BT</div>
+      <div>
+        <h1>مركز التوثيق</h1>
+        <div style="font-size:12px;color:var(--muted)">توثيق • أرقام • رشق • نقاط</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#hero">الرئيسية</a>
+      <a href="#features">المزايا</a
